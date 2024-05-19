@@ -15,6 +15,31 @@ from .serializers import *
 
 
 
+
+
+
+
+
+
+
+
+
+def post_list(request):
+    posts = Post.objects.all()
+    return render(request,'list.html',{'posts': posts})
+
+
+def post_detail(request, id):
+    post = get_object_or_404(Post,id=id)
+    print(id)
+    
+    return render(request,'details.html',{'post': post})
+
+
+
+
+
+
 def index(request):
 
     # if not request.user.is_authenticated :
@@ -22,7 +47,17 @@ def index(request):
 
     
     print(request.user.is_authenticated)
-    return HttpResponse("HOME................")
+    context=Post.objects.all()
+
+    
+
+
+
+
+    return render(request,"posts.html",{"context":context})
+
+
+
 
 
 
