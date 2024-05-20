@@ -1,7 +1,7 @@
 {% extends "base.html" %}
-{% block title %}My Blog{% endblock %}
+{% block title %}Chat-ii{% endblock %}
 {% block content %}
-<h1>My Blog</h1>
+<h1>Chat-ii</h1>
 {% for post in posts %}
 <h2>
 <a href="{% url 'chat-ii:post_detail' post.id %}">

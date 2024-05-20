@@ -7,6 +7,7 @@ from django.contrib.auth.models import User, Group
 from .forms import *
 from .models import *
 from .serializers import *
+from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 # Create your views here.
 
 
@@ -24,9 +25,6 @@ from .serializers import *
 
 
 
-def post_list(request):
-    posts = Post.objects.all()
-    return render(request,'list.html',{'posts': posts})
 
 
 def post_detail(request, id):
@@ -46,15 +44,34 @@ def index(request):
     #     return redirect('login')
 
     
-    print(request.user.is_authenticated)
-    context=Post.objects.all()
+
 
     
+    # paginator= paginator(posts,2)
+    # page_number = request.GET.get('page', 1)
+    # pp=paginator.page(page_number)
+
+
+
+    post_list = Post.objects.all()    
+    paginator = Paginator(post_list,3)
+    page_number = request.GET.get('page', 1)
+    
+    try:
+        posts = paginator.page(page_number)
+    except PageNotAnInteger:
+        
+        posts = paginator.page(1)
+    except EmptyPage:
+        
+        posts = paginator.page(paginator.num_pages)
 
 
 
 
-    return render(request,"posts.html",{"context":context})
+
+
+    return render(request,"list.html",{"posts":posts},status=200)
 
 
 
