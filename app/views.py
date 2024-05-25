@@ -46,31 +46,25 @@ def index(request):
     
 
 
-    
-    # paginator= paginator(posts,2)
-    # page_number = request.GET.get('page', 1)
-    # pp=paginator.page(page_number)
-
-
 
     post_list = Post.objects.all()    
     paginator = Paginator(post_list,3)
     page_number = request.GET.get('page', 1)
-    
-    try:
-        posts = paginator.page(page_number)
-    except PageNotAnInteger:
+    posts = paginator.page(page_number)
+    # try:
+    #     posts = paginator.page(page_number)
+    # except PageNotAnInteger:
         
-        posts = paginator.page(1)
-    except EmptyPage:
+    #     posts = paginator.page(1)
+    # except EmptyPage:
         
-        posts = paginator.page(paginator.num_pages)
+    #     posts = paginator.page(paginator.num_pages)
 
 
 
 
 
-
+    print(paginator.num_pages)
     return render(request,"list.html",{"posts":posts},status=200)
 
 
