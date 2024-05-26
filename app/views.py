@@ -8,6 +8,7 @@ from .forms import *
 from .models import *
 from .serializers import *
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
+# from django.views.decorators.http import require_POST
 # Create your views here.
 
 
@@ -29,11 +30,28 @@ from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 
 def post_detail(request, id):
     post = get_object_or_404(Post,id=id)
-    print(id)
+    comments=PostComment.objects.all()
     
-    return render(request,'details.html',{'post': post})
+    
+    return render(request,'details.html',{'post': post,"comments":comments})
 
 
+
+
+def post_comment(request, id):
+    post = get_object_or_404(Post,id=id)
+    comment=None
+    form=PostCommentsForm(request.POST)
+    if form.is_valid():
+        comment = form.save(commit=False)
+        # Assign the post to the comment
+        comment.post = post
+        # Save the comment to the database
+        comment.save()
+
+
+    
+    return render(request,'comment.html',{'post': post,"form":form,"comment":comment})
 
 
 
@@ -60,7 +78,7 @@ def index(request):
         
     #     posts = paginator.page(paginator.num_pages)
 
-
+    
 
 
 
